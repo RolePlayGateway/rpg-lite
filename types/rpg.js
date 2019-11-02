@@ -55,7 +55,8 @@ class RPG extends Service {
     for (let i = 0; i < this.handles.length; i++) {
       let handle = this.handles[i];
       let response = await this.remote._GET(`/${handle}`);
-      console.log('response for handle', handle, 'was:', response);
+      // TODO: handle errors!
+      this._state[handle] = response;
     }
 
     this.status = 'started';

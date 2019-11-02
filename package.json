@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack -o assets/scripts/rpg.lite.js",
     "start": "node scripts/node",
-    "test": "mocha"
+    "test": "mocha tests"
   },
   "repository": {
     "type": "git",
