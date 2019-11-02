@@ -8,7 +8,7 @@
     "coverage": "nyc npm test",
     "docs": "npm run make:docs && ecstatic docs",
     "examples": "npm run make:examples && ecstatic docs/examples",
-    "make:docs": "jsdoc README.md types -d docs",
+    "make:docs": "./node_modules/.bin/jsdoc -c jsdoc.json README.md types -d docs",
     "make:examples": "docco examples/*.js -o docs",
     "start": "node scripts/node",
     "test": "mocha tests"
