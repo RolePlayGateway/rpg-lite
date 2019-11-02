@@ -12,7 +12,8 @@ async function main () {
   await rpg.start();
   // await swarm.start();
 
-  console.log('NODE STARTED!');
+  console.log('NODE STARTED! Data:', rpg);
+  console.log('NODE STARTED! State:', rpg.state);
 }
 
 main();

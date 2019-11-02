@@ -6,6 +6,7 @@
 // detail later, but there's [an entire site dedicated to docs][docs]
 // if you're interested in learning more now.
 const Collection = require('@fabric/core/types/collection');
+const Entity = require('@fabric/core/types/entity');
 const Remote = require('@fabric/core/types/remote');
 const Service = require('@fabric/core/types/service');
 
@@ -28,10 +29,14 @@ class RPG extends Service {
     }, settings);
 
     // Internals
+    this.cache = [];
     this.remote = new Remote(this.settings);
 
     // Collections
     this.universes = new Collection();
+
+    // Flags
+    this.status = 'waiting';
 
     this._state = {
       universes: []
@@ -40,8 +45,31 @@ class RPG extends Service {
 
   get handles () {
     return [
-      `universes`
+      `universes`,
+      `authors`,
+      `characters`
     ];
+  }
+
+  get state () {
+    let state = {
+      status: this.status
+    };
+
+    for (let i = 0; this.handles.length; i++) {
+      state[this.handles[i]] = this._state[this.handles[i]];
+    }
+
+    return new Entity(state);
+  }
+
+  set state (obj) {
+    if (!this.cache) this.cache = [];
+    /* this.cache.push({
+      '@method': 'SET',
+      '@params': [`/state`, obj]
+    }); */
+    return this;
   }
 
   /**

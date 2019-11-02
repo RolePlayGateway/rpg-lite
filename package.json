@@ -7,7 +7,9 @@
     "build": "webpack -o assets/scripts/rpg.lite.js",
     "coverage": "nyc npm test",
     "docs": "npm run make:docs && ecstatic docs",
-    "make:docs": "jsdoc types -d docs",
+    "examples": "npm run make:examples && ecstatic docs/examples",
+    "make:docs": "jsdoc README.md types -d docs",
+    "make:examples": "docco examples/*.js -o docs",
     "start": "node scripts/node",
     "test": "mocha tests"
   },
@@ -32,8 +34,9 @@
     "jsdocs": "^1.0.0"
   },
   "devDependencies": {
+    "docco": "^0.8.0",
     "ecstatic": "^4.1.2",
-    "jsdoc": "^3.6.3",
+    "jsdoc": "FabricLabs/jsdoc#fabric",
     "mocha": "^6.2.2",
     "nyc": "^14.1.1",
     "webpack": "^4.41.2",

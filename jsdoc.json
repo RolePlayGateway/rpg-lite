@@ -1,0 +1,10 @@
+{
+  "name": "@rpg/lite",
+  "chat": "https://chat.roleplaygateway.com/#/room/#lobby:roleplaygateway.com",
+  "source": "https://github.com/RolePlayGateway/rpg-lite",
+  "templates": {
+    "default": {
+      "layoutFile": "./assets/docs.tmpl"
+    }
+  }
+}
