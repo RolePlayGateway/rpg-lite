@@ -5,7 +5,9 @@
   "main": "types/rpg.js",
   "scripts": {
     "build": "webpack -o assets/scripts/rpg.lite.js",
-    "coverage": "nyc yarn test",
+    "coverage": "nyc npm test",
+    "docs": "npm run make:docs && ecstatic docs",
+    "make:docs": "jsdoc types -d docs",
     "start": "node scripts/node",
     "test": "mocha tests"
   },
@@ -26,12 +28,16 @@
   },
   "homepage": "https://github.com/RolePlayGateway/rpg-lite#readme",
   "dependencies": {
-    "@fabric/core": "FabricLabs/fabric#fabric-0.1.0-develop"
+    "@fabric/core": "FabricLabs/fabric#fabric-0.1.0-develop",
+    "jsdocs": "^1.0.0"
   },
   "devDependencies": {
+    "ecstatic": "^4.1.2",
+    "jsdoc": "^3.6.3",
     "mocha": "^6.2.2",
     "nyc": "^14.1.1",
     "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.10",
+    "yarn": "^1.19.1"
   }
 }
