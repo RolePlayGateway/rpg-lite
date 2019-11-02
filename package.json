@@ -5,6 +5,7 @@
   "main": "types/rpg.js",
   "scripts": {
     "build": "webpack -o assets/scripts/rpg.lite.js",
+    "coverage": "nyc yarn test",
     "start": "node scripts/node",
     "test": "mocha tests"
   },
@@ -14,7 +15,9 @@
   },
   "keywords": [
     "rpg",
-    "fabric"
+    "fabric",
+    "game",
+    "client"
   ],
   "author": "Eric Martindale",
   "license": "MIT",
