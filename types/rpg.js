@@ -10,10 +10,10 @@ class RPG extends Service {
 
     this.settings = Object.assign({
       authority: 'localhost:9999'
-    });
+    }, settings);
 
     // Internals
-    this.remote = new Remote();
+    this.remote = new Remote(this.settings);
 
     // Collections
     this.universes = new Collection();
@@ -43,9 +43,21 @@ class RPG extends Service {
     console.log('[RPG:LITE]', 'Syncing...');
     this.status = 'starting';
 
-    let data = await this.remote._GET('/universes');
-    console.log('[RPG:LITE]', 'got data:', data);
-    
+    let exchange = this;
+
+    console.log('[RPG:LITE]', 'Remote used:', this.remote);
+
+    // TODO: use async map
+    /* let result = await Promise.all(this.handles.map(x => {
+      return exchange.remote._GET(`/${x}`);
+    })); */
+
+    for (let i = 0; i < this.handles.length; i++) {
+      let handle = this.handles[i];
+      let response = await this.remote._GET(`/${handle}`);
+      console.log('response for handle', handle, 'was:', response);
+    }
+
     this.status = 'started';
     console.log('[RPG:LITE]', 'Synced!');
   }

@@ -4,11 +4,13 @@
   "description": "Lightweight version of RPG.",
   "main": "types/rpg.js",
   "scripts": {
+    "build": "webpack -o assets/scripts/rpg.lite.js",
+    "start": "node scripts/node",
     "test": "mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/martindale/rpg-lite.git"
+    "url": "git+https://github.com/RolePlayGateway/rpg-lite.git"
   },
   "keywords": [
     "rpg",
@@ -17,10 +19,16 @@
   "author": "Eric Martindale",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/martindale/rpg-lite/issues"
+    "url": "https://github.com/RolePlayGateway/rpg-lite/issues"
   },
-  "homepage": "https://github.com/martindale/rpg-lite#readme",
+  "homepage": "https://github.com/RolePlayGateway/rpg-lite#readme",
   "dependencies": {
     "@fabric/core": "FabricLabs/fabric#fabric-0.1.0-develop"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.2",
+    "nyc": "^14.1.1",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
   }
 }

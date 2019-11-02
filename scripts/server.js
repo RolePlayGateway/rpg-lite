@@ -7,7 +7,10 @@ const config = {
 
 async function main () {
   let rpg = new RPGLite(config);
+  console.log('[RPG:LITE]', 'Script<Server>', 'Starting...');
   await rpg.start();
+  console.log('[RPG:LITE]', 'Script<Server>', 'Started...');
+ 
 }
 
 main();
