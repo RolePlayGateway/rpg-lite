@@ -10,6 +10,7 @@
     "examples": "npm run make:examples && ecstatic docs/examples",
     "make:docs": "./node_modules/.bin/jsdoc -c jsdoc.json README.md types -d docs",
     "make:examples": "docco examples/*.js -o docs",
+    "report:coverage": "nyc report --reporter=text-lcov > reports/coverage.lcov && ./node_modules/.bin/codecov",
     "start": "node scripts/node",
     "test": "mocha tests"
   },
