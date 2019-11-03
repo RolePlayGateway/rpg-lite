@@ -48,7 +48,8 @@ class RPG extends Service {
     super(settings);
 
     this.settings = Object.assign({
-      authority: 'localhost:9999'
+      authority: 'localhost:9999',
+      sync: false
     }, settings);
 
     // Internals
@@ -112,6 +113,10 @@ class RPG extends Service {
     console.log.apply(null, [ `@[${Date.now()}]` ].concat(msg));
   }
 
+  async _connectSwarm () {
+    // TODO: implement
+  }
+
   /**
    * Call `start()` to begin processing the game state, including
    * the clock beginning to advance for the in-game world.
@@ -120,7 +125,9 @@ class RPG extends Service {
     console.log('[RPG:LITE]', '[ENGINE]', 'Starting...');
     this.status = 'starting';
 
-    await this._sync();
+    // run dependencies
+    if (this.settings.sync) await this._sync();
+    if (this.settings.fabric) await this._connectSwarm();
 
     this.status = 'started';
     console.log('[RPG:LITE]', '[ENGINE]', 'Started!');
@@ -133,36 +140,20 @@ class RPG extends Service {
     this.log('[RPG:LITE]', '[ENGINE]', 'Syncing...');
     this.status = 'syncing';
 
-    this.queue._addWork({
-      method: `_syncLoad`
-    });
-
-    this.status = 'synced';
-    this.log('[RPG:LITE]', '[ENGINE]', 'Synced!');
-  }
-
-  async _syncLoad () {
-    let exchange = this;
-
     console.log('[RPG:LITE]', '[ENGINE]', 'Remote used:', this.remote);
-
-    // TODO: use async map
-    /* let result = await Promise.all(this.handles.map(x => {
-      return exchange.remote._GET(`/${x}`);
-    })); */
 
     for (let i = 0; i &lt; this.handles.length; i++) {
       let handle = this.handles[i];
 
       try {
-        let response = await this.remote._GET(`/${handle}`);
+        this._state[handle] = await this.remote._GET(`/${handle}`);
       } catch (E) {
         console.error('[RPG:LITE]', '[ENGINE]', 'Could not sync:', E);
       }
-
-      // TODO: handle errors!
-      this._state[handle] = response;
     }
+
+    this.status = 'synced';
+    this.log('[RPG:LITE]', '[ENGINE]', 'Synced!');
   }
 }
 
