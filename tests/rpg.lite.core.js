@@ -2,6 +2,7 @@
 
 const assert = require('assert');
 const RPG = require('../');
+const Canvas = require('../types/canvas');
 const Queue = require('../types/queue');
 
 describe('RPG Lite', function () {
@@ -21,6 +22,18 @@ describe('RPG Lite', function () {
 
       assert.ok(rpg);
       assert.equal(rpg.status, 'started');
+    });
+  });
+
+  describe('Canvas', function () {
+    it('should expose a constructor', function () {
+      assert.equal(Queue instanceof Function, true);
+    });
+
+    it('can draw a canvas', async function () {
+      let canvas = new Canvas();
+      await canvas._draw();
+      assert.ok(canvas);
     });
   });
 
