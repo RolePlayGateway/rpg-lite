@@ -22,3 +22,4 @@ If you're interested in helping others learn, join us in [#mentorships:fabric.pu
 
 [node-js]: https://nodejs.org
 [docs]: https://roleplaygateway.github.io/rpg-lite
+[mentorships-channel]: https://chat.roleplaygateway.com/#/room/#mentorships:fabric.pub

@@ -34,6 +34,7 @@
     "jsdocs": "^1.0.0"
   },
   "devDependencies": {
+    "codecov": "^3.6.1",
     "docco": "^0.8.0",
     "ecstatic": "^4.1.2",
     "jsdoc": "FabricLabs/jsdoc#fabric",
