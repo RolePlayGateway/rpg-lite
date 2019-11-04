@@ -1,9 +1,12 @@
 'use strict';
 
 const canvas = require('canvas');
+const Component = require('@fabric/http/types/component');
 
-class Canvas {
+class Canvas extends Component {
   constructor (settings = {}) {
+    super(settings);
+
     this.settings = Object.assign({
       dimensions: {
         x: 256,
@@ -15,16 +18,20 @@ class Canvas {
     this.canvas = canvas.createCanvas();
     this.context = this.canvas.getContext('2d');
 
+    this.context.font = '11px Impact';
+
     this._state = {};
   }
 
-  _writeText (text) {
-    this.context.font = '30px Impact';
+  _writeText (input) {
+    let text = this.context.measureText(input);
+
     // this.context.rotate(0.1);
-    this.context.fillText(text, 50, 100);
+    this.context.fillText(input, 50, 100);
   }
 
-  _draw () {
+  async _draw () {
+    console.log('PRETENDING TO DRAW...');
     this._writeText('yo dawg');
     console.log('<img src="' + this.canvas.toDataURL() + '" />')
   }

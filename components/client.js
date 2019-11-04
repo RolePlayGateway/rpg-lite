@@ -24,6 +24,7 @@ class LiteClient extends Component {
   }
 
   async start () {
+    await this.canvas._draw();
     await this.rpg.start();
   }
 }

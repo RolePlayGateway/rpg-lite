@@ -10,6 +10,7 @@ const Entity = require('@fabric/core/types/entity');
 const Remote = require('@fabric/core/types/remote');
 const Service = require('@fabric/core/types/service');
 
+// #### Internal Types
 const Queue = require('./queue');
 
 /**
@@ -38,6 +39,7 @@ class RPG extends Service {
 
     // Collections
     this.universes = new Collection();
+    this.messages = new Collection();
 
     // Typecasting
     this.queue.use(RPG);
@@ -47,7 +49,22 @@ class RPG extends Service {
     this.status = 'waiting';
 
     // State
-    this._state = {};
+    this._state = {
+      clocks: {
+        last: Date.now()
+      }
+    };
+  }
+
+  log (...msg) {
+    let params = [ `@[${Date.now()}]` ].concat(msg);
+    let entity = this.messages.create({
+      '@type': 'Event',
+      '@data': { params }
+    });
+
+    // TODO: document & upstream
+    console.log.apply(null, params);
   }
 
   /**
@@ -86,10 +103,6 @@ class RPG extends Service {
       '@params': [`/state`, obj]
     }); */
     return this;
-  }
-
-  log (...msg) {
-    console.log.apply(null, [ `@[${Date.now()}]` ].concat(msg));
   }
 
   async _connectSwarm () {
