@@ -23,6 +23,7 @@ const Universe = require('./universe');
 /**
  * The core {@link RPG} class provides all functions necessary
  * for interacting with the game world, as powered by {@link Verse}.
+ * @property {Collection} entities
  */
 class RPG extends Service {
   /**
@@ -60,6 +61,7 @@ class RPG extends Service {
       type: Universe
     });
 
+    // internal collections
     this.entities = new Collection();
     this.messages = new Collection();
 
@@ -78,47 +80,6 @@ class RPG extends Service {
         last: Date.now()
       }
     };
-  }
-
-  boot () {
-    console.log('[RPG:LITE]', '[BOOT]', 'Booting...');
-    this.status = 'booting';
-    let seed = new Key();
-    this._state.seed = seed.toObject();
-    this.status = 'booted';
-    return this._state;
-  }
-
-  log (...msg) {
-    let params = [ `@[${Date.now()}]` ].concat(msg);
-    let entity = this.messages.create({
-      '@type': 'Event',
-      '@data': { params }
-    });
-
-    // TODO: document & upstream
-    console.log.apply(null, params);
-  }
-
-  tick () {
-    let now = Date.now();
-    let dt = (now - this._state.clocks.last) / 1000.0;
-
-    this._advanceClockSeconds(dt);
-    this.render();
-
-    this._state.clocks.last = now;
-    this._requestAnimationFrame();
-  }
-
-  _advanceClockSeconds (dt) {
-    // update game state and entities here...
-    console.log('Advancing clock seconds... delta:', dt);
-  }
-
-  _requestAnimationFrame () {
-    console.log('Requesting animation frame...');
-    requestAnimFrame(this.tick.bind(this));
   }
 
   /**
@@ -221,6 +182,54 @@ class RPG extends Service {
 
     this.status = 'synced';
     this.log('[RPG:LITE]', '[ENGINE]', 'Synced!');
+  }
+
+  async _write () {
+    for (let i = 0; i < this.handles.length; i++) {
+      let handle = this.handles[i];
+    }
+  }
+
+
+  boot () {
+    console.log('[RPG:LITE]', '[BOOT]', 'Booting...');
+    this.status = 'booting';
+    let seed = new Key();
+    this._state.seed = seed.toObject();
+    this.status = 'booted';
+    return this._state;
+  }
+
+  log (...msg) {
+    let params = [ `@[${Date.now()}]` ].concat(msg);
+    let entity = this.messages.create({
+      '@type': 'Event',
+      '@data': { params }
+    });
+
+    // TODO: document & upstream
+    console.log.apply(null, params);
+  }
+
+  tick () {
+    let now = Date.now();
+    let dt = (now - this._state.clocks.last) / 1000.0;
+
+    this._advanceClockSeconds(dt);
+    this.render();
+
+    this._state.clocks.last = now;
+    this._requestAnimationFrame();
+  }
+
+  _advanceClockSeconds (dt) {
+    // update game state and entities here...
+    console.log('Advancing clock seconds... delta:', dt);
+  }
+
+  _requestAnimationFrame () {
+    console.log('Requesting animation frame...');
+    requestAnimFrame(this.tick.bind(this));
   }
 }
 
