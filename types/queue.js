@@ -4,11 +4,20 @@ const EncryptedPromise = require('@fabric/core/types/promise');
 const Entity = require('@fabric/core/types/entity');
 const Service = require('@fabric/core/types/service');
 
+/**
+ * Manage a list of jobs.
+ */
 class Queue extends Service {
+  /**
+   * Create an instance of a {@link Queue}.
+   * @param {Object} settings 
+   * @param {Boolean} settings.debug
+   */
   constructor (settings = {}) {
     super(settings);
 
     this.settings = Object.assign({
+      debug: false,
       limits: {
         rate: 60 // limit to 60 frames per second
       }
@@ -77,7 +86,8 @@ class Queue extends Service {
   }
 
   async _processWork (job) {
-    // console.log('[RPG:QUEUE]', 'Worker processing incoming job:', job);
+    if (this.settings.debug) console.log('[RPG:QUEUE]', 'Worker processing incoming job:', job);
+    if (!job.params) job.params = [];
     let entity = new Entity(job);
     let result = await this.route(job);
     this._entities[entity.id] = entity;
@@ -92,16 +102,14 @@ class Queue extends Service {
   async route (msg) {
     let result = null;
 
+    if (!msg['@method']) throw new Error('Message property "@method" is required.');
+
     switch (msg['@method']) {
       default:
-        // console.log('DYNAMIC WORK TYPE:', msg['@method']);
-        // console.log('DYNAMIC WORK TYPE, methods known:', Object.keys(this._methods));
         if (this._methods[msg['@method']]) {
-          // console.log('method exists:', this._methods[msg['@method']]);
-          // console.log('state used:', this._state);
           result = this._methods[msg['@method']].call({
             _state: this._state
-          }, msg['@params']);
+          }, ...msg['@params']);
         }
         break;
     }
