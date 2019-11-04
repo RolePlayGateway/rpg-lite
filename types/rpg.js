@@ -10,6 +10,10 @@ const Entity = require('@fabric/core/types/entity');
 const Key = require('@fabric/core/types/key');
 const Remote = require('@fabric/core/types/remote');
 const Service = require('@fabric/core/types/service');
+
+// #### `@fabric/rpg
+// As a core dependency, `@fabric/rpg` provides many useful types
+// for downstream designers.
 const Verse = require('@fabric/rpg');
 
 // HTTP
@@ -142,6 +146,14 @@ class RPG extends Service {
     if (this.settings.sync) await this._sync();
     if (this.settings.fabric) await this._connectSwarm();
 
+    this.queue.on('job', function (work) {
+      console.log('incoming:', work);
+    });
+
+    this.queue.on('work', function (work) {
+      console.log('prod:', work);
+    });
+
     this.queue._addWork({
       method: 'boot'
     });
@@ -150,11 +162,11 @@ class RPG extends Service {
     await this.queue.start();
     await this.swarm.start();
 
-    this.timer = setTimeout(function () {
+    this.timer = setInterval(function () {
       exchange.queue._addWork({
-        '@method': 'tick'
+        method: 'tick'
       });
-    }, this.settings.framerate / 1000);
+    }, this.settings.framerate * 1000);
 
     this.status = 'started';
     // console.log('[RPG:LITE]', '[ENGINE]', 'Started!');
@@ -220,11 +232,11 @@ class RPG extends Service {
     let now = Date.now();
     let dt = (now - this._state.clocks.last) / 1000.0;
 
-    this._advanceClockSeconds(dt);
-    this.render();
+    // this._advanceClockSeconds(dt);
+    // this.render();
 
     this._state.clocks.last = now;
-    this._requestAnimationFrame();
+    // this._requestAnimationFrame();
   }
 
   _advanceClockSeconds (dt) {
