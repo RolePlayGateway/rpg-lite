@@ -35,6 +35,7 @@
   "homepage": "https://github.com/RolePlayGateway/rpg-lite#readme",
   "dependencies": {
     "@fabric/core": "FabricLabs/fabric#fabric-0.1.0-develop",
+    "@fabric/http": "FabricLabs/web#fabric-0.1.0-develop",
     "canvas": "^2.6.0",
     "jsdocs": "^1.0.0"
   },
