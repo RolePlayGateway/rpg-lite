@@ -1,3 +1,8 @@
 {
-  "name": "@rpg/lite"
+  "name": "@rpg/lite",
+  "swarm": {
+    "seeds": [
+      "hub.roleplaygateway.com:9999"
+    ]
+  }
 }

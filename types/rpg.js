@@ -16,6 +16,9 @@ const Swarm = require('@fabric/http/types/swarm');
 
 // #### Internal Types
 const Queue = require('./queue');
+const Character = require('./character');
+const Player = require('./player');
+const Universe = require('./universe');
 
 /**
  * The core {@link RPG} class provides all functions necessary
@@ -33,16 +36,30 @@ class RPG extends Service {
 
     this.settings = Object.assign({
       authority: 'localhost:9999',
+      framerate: 1,
       sync: false
     }, settings);
 
     // Internals
     this.cache = [];
+    this.timer = null;
     this.queue = new Queue();
     this.remote = new Remote(this.settings);
+    this.swarm = new Swarm(this.settings.swarm);
 
     // Collections
-    this.universes = new Collection();
+    this.characters = new Collection({
+      type: Character
+    });
+
+    this.players = new Collection({
+      type: Player
+    });
+
+    this.universes = new Collection({
+      type: Universe
+    });
+
     this.entities = new Collection();
     this.messages = new Collection();
 
@@ -147,12 +164,16 @@ class RPG extends Service {
     // TODO: implement
   }
 
+  async _registerPlayer (player) {
+    let actor = await this.players.create(player);
+  }
+
   /**
    * Call `start()` to begin processing the game state, including
    * the clock beginning to advance for the in-game world.
    */
   async start () {
-    console.log('[RPG:LITE]', '[ENGINE]', 'Starting...');
+    // console.log('[RPG:LITE]', '[ENGINE]', 'Starting...');
     this.status = 'starting';
 
     // run dependencies
@@ -165,9 +186,18 @@ class RPG extends Service {
 
     await this.queue._setState(this._state);
     await this.queue.start();
+    await this.swarm.start();
+
+    this.timer = setTimeout(this.tick.bind(this), this.settings.framerate / 1000);
 
     this.status = 'started';
-    console.log('[RPG:LITE]', '[ENGINE]', 'Started!');
+    // console.log('[RPG:LITE]', '[ENGINE]', 'Started!');
+  }
+
+  async stop () {
+    if (this.timer) clearInterval(this.timer);
+    await this.swarm.stop();
+    await this.queue.stop();
   }
 
   /**

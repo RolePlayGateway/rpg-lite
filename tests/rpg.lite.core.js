@@ -1,5 +1,8 @@
 'use strict';
 
+require('jsdom-global')();
+// require('debug-trace')({ always: true });
+
 const assert = require('assert');
 const RPG = require('../');
 const Canvas = require('../types/canvas');
@@ -16,6 +19,7 @@ describe('RPG Lite', function () {
 
       try {
         await rpg.start();
+        await rpg.stop();
       } catch (E) {
         assert.fail(E);
       }
@@ -29,12 +33,6 @@ describe('RPG Lite', function () {
     it('should expose a constructor', function () {
       assert.equal(Queue instanceof Function, true);
     });
-
-    it('can draw a canvas', async function () {
-      let canvas = new Canvas();
-      await canvas._draw();
-      assert.ok(canvas);
-    });
   });
 
   describe('Queue', function () {
@@ -42,24 +40,36 @@ describe('RPG Lite', function () {
       assert.equal(Queue instanceof Function, true);
     });
 
-    it('can process basic work', async function () {
-      let queue = new Queue();
-
-      try {
+    it('can process basic work', function (done) {
+      async function test () {
+        let queue = new Queue();
+        let target = 'Hello, game world!';
+  
         await queue.use(function exampleJob () {
-          return `Hello, world!`;
+          return target;
         });
-        await queue.start();
-      } catch (E) {
-        assert.fail(E);
+
+        queue.on('work', async function (work) {
+          assert.equal(work.result, target);
+
+          // cleanup
+          await queue.stop();
+          assert.equal(queue.status, 'stopped');
+  
+          // signal done
+          done();
+        });
+  
+        try {
+          await queue.start();
+          await queue._addWork({ method: 'exampleJob' });
+          assert.equal(queue.status, 'started');
+        } catch (E) {
+          assert.fail(E);
+        }
       }
 
-      console.log('queue:', queue);
-      console.log('queue state:', queue.state);
-      console.log('queue queue:', queue.queue);
-
-      assert.ok(queue);
-      assert.equal(queue.status, 'started');
+      test().catch(assert.fail);
     });
   });
 });

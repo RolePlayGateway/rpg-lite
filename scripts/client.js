@@ -7,16 +7,16 @@ const settings = require('../settings/default');
 async function main () {
   let element = document.querySelector('rpg-lite-client');
 
-  window.rpg = new Client(settings);
-  window.rpg.register();
-  window.rpg.subscribe('/', _handleRootMessage.bind(this));
+  window.client = new Client(settings);
+  window.client.register();
+  window.client.subscribe('/', _handleRootMessage.bind(this));
 
   if (element) {
-    window.rpg._bind(element);
+    window.client._bind(element);
   }
 
-  await rpg.start();
-  console.log('[RPG:LITE]', '[CLIENT]', 'Booted!  Now waiting for player input...');
+  await window.client.start();
+  console.log('[RPG:LITE]', '[CLIENT]', 'Client started!  Now waiting for player input...');
 }
 
 async function _handleRootMessage (msg) {
