@@ -8,6 +8,7 @@ async function main () {
   let element = document.querySelector('rpg-lite-client');
 
   window.rpg = new Client(settings);
+  window.rpg.register();
   window.rpg.subscribe('/', _handleRootMessage.bind(this));
 
   if (element) {

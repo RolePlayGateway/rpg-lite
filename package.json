@@ -8,6 +8,7 @@
     "coverage": "nyc npm test",
     "docs": "npm run make:docs && ecstatic docs",
     "examples": "npm run make:examples && ecstatic docs/examples",
+    "local": "npm run build && ecstatic assets",
     "make:app": "webpack scripts/client.js -o assets/scripts/app.js",
     "make:docs": "./node_modules/.bin/jsdoc -c jsdoc.json README.md types -d docs",
     "make:examples": "docco examples/*.js -o docs",

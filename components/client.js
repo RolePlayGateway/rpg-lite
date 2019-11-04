@@ -16,7 +16,13 @@ class LiteClient extends Component {
     this.canvas = new Canvas();
     this.rpg = new RPG(this.settings);
 
+    this.rpg.subscribe('/', this._handleRootMessage.bind(this));
+
     this._state = {};
+  }
+
+  _handleRootMessage (msg) {
+    console.log('[RPG:LITE]', '[CLIENT]', 'Root message (in component):', msg);
   }
 
   _getInnerHTML () {
@@ -25,6 +31,7 @@ class LiteClient extends Component {
 
   async start () {
     await this.canvas._draw();
+    await this.canvas._appendTo(document.body);
     await this.rpg.start();
   }
 }

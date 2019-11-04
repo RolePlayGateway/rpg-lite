@@ -7,8 +7,12 @@
 // if you're interested in learning more now.
 const Collection = require('@fabric/core/types/collection');
 const Entity = require('@fabric/core/types/entity');
+const Key = require('@fabric/core/types/key');
 const Remote = require('@fabric/core/types/remote');
 const Service = require('@fabric/core/types/service');
+
+// HTTP
+const Swarm = require('@fabric/http/types/swarm');
 
 // #### Internal Types
 const Queue = require('./queue');
@@ -39,11 +43,14 @@ class RPG extends Service {
 
     // Collections
     this.universes = new Collection();
+    this.entities = new Collection();
     this.messages = new Collection();
 
     // Typecasting
-    this.queue.use(RPG);
-    this.queue.use(Collection);
+    // this.queue.use(RPG);
+    // this.queue.use(Collection);
+    this.queue.use(this.boot);
+    this.queue.use(this.tick);
 
     // Flags
     this.status = 'waiting';
@@ -54,6 +61,15 @@ class RPG extends Service {
         last: Date.now()
       }
     };
+  }
+
+  boot () {
+    console.log('[RPG:LITE]', '[BOOT]', 'Booting...');
+    this.status = 'booting';
+    let seed = new Key();
+    this._state.seed = seed.toObject();
+    this.status = 'booted';
+    return this._state;
   }
 
   log (...msg) {
@@ -67,6 +83,27 @@ class RPG extends Service {
     console.log.apply(null, params);
   }
 
+  tick () {
+    let now = Date.now();
+    let dt = (now - this._state.clocks.last) / 1000.0;
+
+    this._advanceClockSeconds(dt);
+    this.render();
+
+    this._state.clocks.last = now;
+    this._requestAnimationFrame();
+  }
+
+  _advanceClockSeconds (dt) {
+    // update game state and entities here...
+    console.log('Advancing clock seconds... delta:', dt);
+  }
+
+  _requestAnimationFrame () {
+    console.log('Requesting animation frame...');
+    requestAnimFrame(this.tick.bind(this));
+  }
+
   /**
    * Provides a simple list of named {@link Collection} types to manage.
    */
@@ -75,7 +112,8 @@ class RPG extends Service {
     return [
       `universes`,
       `authors`,
-      `characters`
+      `characters`,
+      `snippets`
     ];
   }
 
@@ -120,6 +158,13 @@ class RPG extends Service {
     // run dependencies
     if (this.settings.sync) await this._sync();
     if (this.settings.fabric) await this._connectSwarm();
+
+    this.queue._addWork({
+      method: 'boot'
+    });
+
+    await this.queue._setState(this._state);
+    await this.queue.start();
 
     this.status = 'started';
     console.log('[RPG:LITE]', '[ENGINE]', 'Started!');
