@@ -5,7 +5,7 @@ const webpack = require('webpack');
 module.exports = {
   entry: './scripts/node.js',
   // devtool: 'source-map',
-  mode: 'development',
+  // mode: 'development',
   target: 'web',
   output: {
     library: 'RPG'

@@ -26,7 +26,14 @@ class LiteClient extends Component {
   }
 
   _getInnerHTML () {
-    return `<div id="rpg-lite-client"><h1>hello game world!</h1><canvas></canvas></div>`;
+    let html = ``;
+
+    html += `<div id="rpg-lite-client">`;
+    html += `<h1>hello game world!</h1>`
+    html += `<canvas></canvas>`;
+    html += `</div>`;
+
+    return html;
   }
 
   async start () {

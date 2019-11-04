@@ -66,9 +66,7 @@ class RPG extends Service {
     this.entities = new Collection();
     this.messages = new Collection();
 
-    // Typecasting
-    // this.queue.use(RPG);
-    // this.queue.use(Collection);
+    // Assign Job Types
     this.queue.use(this.boot);
     this.queue.use(this.tick);
 
