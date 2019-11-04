@@ -10,6 +10,7 @@ const Entity = require('@fabric/core/types/entity');
 const Key = require('@fabric/core/types/key');
 const Remote = require('@fabric/core/types/remote');
 const Service = require('@fabric/core/types/service');
+const Verse = require('@fabric/rpg');
 
 // HTTP
 const Swarm = require('@fabric/http/types/swarm');
@@ -137,6 +138,8 @@ class RPG extends Service {
     // console.log('[RPG:LITE]', '[ENGINE]', 'Starting...');
     this.status = 'starting';
 
+    let exchange = this;
+
     // run dependencies
     if (this.settings.sync) await this._sync();
     if (this.settings.fabric) await this._connectSwarm();
@@ -149,7 +152,11 @@ class RPG extends Service {
     await this.queue.start();
     await this.swarm.start();
 
-    this.timer = setTimeout(this.tick.bind(this), this.settings.framerate / 1000);
+    this.timer = setTimeout(function () {
+      exchange.queue._addWork({
+        '@method': 'tick'
+      });
+    }, this.settings.framerate / 1000);
 
     this.status = 'started';
     // console.log('[RPG:LITE]', '[ENGINE]', 'Started!');
