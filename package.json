@@ -36,8 +36,7 @@
   "dependencies": {
     "@fabric/core": "FabricLabs/fabric#fabric-0.1.0-develop",
     "@fabric/http": "FabricLabs/web#fabric-0.1.0-develop",
-    "canvas": "^2.6.0",
-    "jsdocs": "^1.0.0"
+    "canvas": "^2.6.0"
   },
   "devDependencies": {
     "codecov": "^3.6.1",
