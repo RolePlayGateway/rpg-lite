@@ -5,7 +5,7 @@
   "main": "types/rpg.js",
   "scripts": {
     "build": "npm run make:lib && npm run make:app && npm run make:docs",
-    "coverage": "nyc npm test",
+    "coverage": "c8 npm test",
     "docs": "npm run make:docs && ecstatic docs",
     "examples": "npm run make:examples && ecstatic docs/examples",
     "local": "npm run build && ecstatic assets",
@@ -13,7 +13,7 @@
     "make:docs": "./node_modules/.bin/jsdoc -c jsdoc.json README.md types -d docs",
     "make:examples": "docco examples/*.js -o docs",
     "make:lib": "webpack -o assets/scripts/rpg.lite.js",
-    "report:coverage": "nyc report --reporter=text-lcov > reports/coverage.lcov && ./node_modules/.bin/codecov",
+    "report:coverage": "c8 report --reporter=text-lcov > reports/coverage.lcov && ./node_modules/.bin/codecov",
     "start": "node scripts/node",
     "test": "npm run build && mocha tests"
   },
@@ -34,26 +34,16 @@
   },
   "homepage": "https://github.com/RolePlayGateway/rpg-lite#readme",
   "dependencies": {
-    "@fabric/core": "FabricLabs/fabric#fabric-0.1.0-develop",
-    "@fabric/http": "FabricLabs/web#fabric-0.1.0-develop",
+    "@fabric/core": "FabricLabs/fabric#master",
+    "@fabric/http": "FabricLabs/fabric-http#master",
     "@fabric/rpg": "RolePlayGateway/rpg#rpg-0.2.0-develop",
-    "canvas": "^2.6.0"
+    "canvas": "2.10.1"
   },
   "devDependencies": {
-    "codecov": "^3.6.1",
-    "debug-trace": "^2.2.2",
-    "docco": "^0.8.0",
-    "ecstatic": "^4.1.2",
     "jsdoc": "FabricLabs/jsdoc#fabric",
-    "jsdom": "^15.2.1",
-    "jsdom-global": "^3.0.2",
-    "mocha": "^6.2.2",
-    "nyc": "^14.1.1",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "yarn": "^1.19.1"
+    "mocha": "10.0.0"
   },
-  "nyc": {
+  "c8": {
     "include": "types"
   }
 }
