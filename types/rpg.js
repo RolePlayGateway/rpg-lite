@@ -8,8 +8,8 @@
 const Collection = require('@fabric/core/types/collection');
 const Entity = require('@fabric/core/types/entity');
 const Key = require('@fabric/core/types/key');
-const Remote = require('@fabric/core/types/remote');
 const Service = require('@fabric/core/types/service');
+const Remote = require('@fabric/http/types/remote');
 
 // #### `@fabric/rpg
 // As a core dependency, `@fabric/rpg` provides many useful types
