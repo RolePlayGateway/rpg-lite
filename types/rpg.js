@@ -5,10 +5,13 @@
 // building distributed applications.  We'll cover this in more
 // detail later, but there's [an entire site dedicated to docs][docs]
 // if you're interested in learning more now.
+// #### Fabric Types
 const Collection = require('@fabric/core/types/collection');
 const Entity = require('@fabric/core/types/entity');
 const Key = require('@fabric/core/types/key');
 const Service = require('@fabric/core/types/service');
+
+// Legacy Web Types
 const Remote = require('@fabric/http/types/remote');
 
 // #### `@fabric/rpg
@@ -17,7 +20,7 @@ const Remote = require('@fabric/http/types/remote');
 const Verse = require('@fabric/rpg');
 
 // HTTP
-const Swarm = require('@fabric/http/types/swarm');
+const Swarm = require('@fabric/core/types/swarm');
 
 // #### Internal Types
 const Queue = require('./queue');
