@@ -14,6 +14,7 @@
     "make:examples": "docco examples/*.js -o docs",
     "make:lib": "webpack -o assets/scripts/rpg.lite.js",
     "report:coverage": "c8 report --reporter=text-lcov > reports/coverage.lcov && ./node_modules/.bin/codecov",
+    "report:install": "rm -rf node_modules && rm package-lock.json && echo \"$ npm i\n\" > reports/install.log && npm i >> reports/install.log",
     "start": "node scripts/node",
     "test": "npm run build && mocha tests"
   },
@@ -34,8 +35,8 @@
   },
   "homepage": "https://github.com/RolePlayGateway/rpg-lite#readme",
   "dependencies": {
-    "@fabric/core": "FabricLabs/fabric#master",
-    "@fabric/http": "FabricLabs/fabric-http#master",
+    "@fabric/core": "FabricLabs/fabric#feature/cleanup",
+    "@fabric/http": "FabricLabs/fabric-http#feature/cleanup",
     "@fabric/rpg": "RolePlayGateway/rpg#rpg-0.2.0-develop",
     "canvas": "2.10.1"
   },
